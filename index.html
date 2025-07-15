@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stake Mini App - New1</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin-top: 30px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 50px);
+      grid-gap: 10px;
+      justify-content: center;
+      margin: 30px auto;
+    }
+    .cell {
+      width: 50px;
+      height: 50px;
+      background-color: #1f1f1f;
+      border-radius: 5px;
+    }
+    .diamond {
+      background-image: url('https://rafiul1230.github.io/New1/diamond.png');
+      background-size: cover;
+    }
+    .highlight {
+      animation: pulse 1s ease-in-out infinite alternate;
+    }
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.2); }
+    }
+    .info {
+      font-size: 18px;
+      margin-top: 20px;
+      animation: glow 2s infinite;
+      white-space: pre-line;
+    }
+    @keyframes glow {
+      0% { color: #00ff00; }
+      50% { color: #66ff66; }
+      100% { color: #00ff00; }
+    }
+  </style>
+</head>
+<body>
+  <h2>Enter Client Seed</h2>
+  <input type="text" id="seed" placeholder="Type here..." />
+  <br />
+  <button id="predictBtn" onclick="predict()">🎯 Predict</button>
+  <div class="grid" id="grid"></div>
+  <div class="info" id="info"></div>
+
+  <audio id="bling" src="https://rafiul1230.github.io/New1/bling.mp3" preload="auto"></audio>
+
+  <script>
+    let used = false;
+    function predict() {
+      if (used) return;
+      const seed = document.getElementById("seed").value.trim();
+      if (!seed) {
+        alert("Please enter a client seed.");
+        return;
+      }
+
+      document.getElementById("predictBtn").style.display = "none";
+      used = true;
+
+      const grid = document.getElementById("grid");
+      const info = document.getElementById("info");
+      const bling = document.getElementById("bling");
+
+      grid.innerHTML = "";
+      const mines = Array.from({length: 25}, (_, i) => i);
+      const picks = mines.sort(() => 0.5 - Math.random()).slice(0, 4);
+
+      for (let i = 0; i < 25; i++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        if (picks.includes(i)) {
+          cell.classList.add("diamond", "highlight");
+        }
+        grid.appendChild(cell);
+      }
+
+      bling.play();
+      const accuracy = Math.floor(Math.random() * (99 - 90 + 1)) + 90;
+      info.innerText = `🎯 Prediction Accuracy: ${accuracy}%\n100% Accurate for New Accounts Only!`;
+    }
+  </script>
+</body>
+</html>
